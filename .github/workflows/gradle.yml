@@ -36,7 +36,7 @@ jobs:
             echo "SUT did not start in $TIMEOUT seconds"
             exit 1
           fi
-      - name: Clean Gradle cache
-        run: ./gradlew cleanBuildCache
+      - name: Clean Gradle
+        run: ./gradlew clean
       - name: Build with Gradle
         run: ./gradlew test -Dselenide.headless=true --info
