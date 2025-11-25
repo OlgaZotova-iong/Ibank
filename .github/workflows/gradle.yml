@@ -16,27 +16,8 @@ jobs:
           distribution: 'adopt'
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Create artifacts directory
-        run: mkdir -p ./artifacts
       - name: Start SUT
         run: java -jar ./artifacts/app-ibank.jar -P:profile=test &
-      - name: Wait for SUT to start
-        run: |
-          TIMEOUT=60
-          for i in $(seq 1 $TIMEOUT); do
-            if curl -s --head --request GET http://localhost:9999 > /dev/null 2>&1; then
-              echo "SUT is running!"
-              break
-            else
-              echo "Waiting for SUT to start... ($i/$TIMEOUT)"
-              sleep 1
-            fi
-          done
-          if [ $i -eq $TIMEOUT ]; then
-            echo "SUT did not start in $TIMEOUT seconds"
-            exit 1
-          fi
-      - name: Clean Gradle
-        run: ./gradlew clean
       - name: Build with Gradle
         run: ./gradlew test -Dselenide.headless=true --info
+
